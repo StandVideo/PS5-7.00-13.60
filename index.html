@@ -18,10 +18,12 @@
     #cache-status {
       position: fixed;
       top: 10px;
-      left: 10px;
+      right: 12px;
+      left: auto;
       z-index: 9999;
       font-size: 14px;
       color: #aaa;
+      text-align: right;
       pointer-events: none;
     }
 
@@ -33,7 +35,6 @@
 </head>
 
 <body>
-
   <div id="cache-status">Vérification du cache...</div>
   <div id="console"></div>
 
@@ -63,26 +64,21 @@
           var moduleScript = document.createElement("script");
           moduleScript.type = "module";
           moduleScript.src = "./src/site.js";
-
           moduleScript.onerror = function () {
             show("Erreur de chargement : site.js");
           };
-
           document.body.appendChild(moduleScript);
           return;
         }
 
         var script = document.createElement("script");
         script.src = scripts[index];
-
         script.onload = function () {
           loadNext(index + 1);
         };
-
         script.onerror = function () {
           show("Erreur de chargement : " + scripts[index]);
         };
-
         document.body.appendChild(script);
       }
 
@@ -97,20 +93,20 @@
 
     ac.addEventListener("checking", function () {
       show("Vérification du cache...");
-    }, false);
+    });
 
     ac.addEventListener("downloading", function () {
       show("Mise en cache : 0%");
-    }, false);
+    });
 
     ac.addEventListener("progress", function (e) {
       if (e && e.total > 0) {
-        var percent = Math.round((e.loaded / e.total) * 100);
-        show("Mise en cache : " + percent + "%");
+        show("Mise en cache : " +
+          Math.round((e.loaded / e.total) * 100) + "%");
       } else {
         show("Mise en cache...");
       }
-    }, false);
+    });
 
     function ready(message) {
       show(message);
@@ -119,27 +115,24 @@
 
     ac.addEventListener("cached", function () {
       ready("Cache prêt — lancement...");
-    }, false);
+    });
 
     ac.addEventListener("noupdate", function () {
       ready("Cache déjà à jour — lancement...");
-    }, false);
+    });
 
     ac.addEventListener("updateready", function () {
-      try {
-        ac.swapCache();
-      } catch (e) {}
-
+      try { ac.swapCache(); } catch (e) {}
       ready("Cache mis à jour — lancement...");
-    }, false);
+    });
 
     ac.addEventListener("error", function () {
       ready("Cache indisponible — lancement");
-    }, false);
+    });
 
     ac.addEventListener("obsolete", function () {
       ready("Cache obsolète — lancement");
-    }, false);
+    });
 
     if (!navigator.onLine) {
       ready("Hors ligne — lancement depuis le cache");
@@ -153,6 +146,5 @@
     }
   })();
   </script>
-
 </body>
 </html>
