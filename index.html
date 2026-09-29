@@ -5,25 +5,15 @@
   <meta name="viewport" content="width=device-width,initial-scale=1">
   <title>PS5-Relapse</title>
 
-<style>
-
-html,body{
-
-    margin:0;
-
-    padding:0;
-
-    min-height:100vh;
-
-    width:100%;
-
-    background:#0b0d10 url("img/BG.jpg") center center/cover no-repeat fixed;
-
-    color:#c8ced8;
-
-    font:15px/1.45 "Segoe UI",system-ui,sans-serif;
-
-}
+  <style>
+    html, body {
+      margin: 0;
+      padding: 0;
+      min-height: 100vh;
+      background:#0b0d10 url("img/BG.jpg") center center/cover no-repeat fixed;
+      color: #fff;
+      font-family: Arial, sans-serif;
+    }
 
     #cache-status {
       position: fixed;
@@ -44,76 +34,123 @@ html,body{
 
 <body>
 
-  <div id="cache-status">checking cache...</div>
-
+  <div id="cache-status">Vérification du cache...</div>
   <div id="console"></div>
 
-  <!-- Tes scripts restent exactement dans le même ordre -->
-  <script src="./src/firmware.js"></script>
-  <script src="./src/main.js"></script>
-  <script src="./src/rop.js"></script>
-  <script src="./src/utils/syscalls.js"></script>
-  <script type="module" src="./src/site.js"></script>
-
-  <!-- Affichage du cache uniquement -->
   <script>
   (function () {
-
+    var started = false;
     var status = document.getElementById("cache-status");
     var ac = window.applicationCache;
 
     function show(text) {
-      if (status) {
-        status.textContent = text;
+      status.textContent = text;
+    }
+
+    function launchScripts() {
+      if (started) return;
+      started = true;
+
+      var scripts = [
+        "./src/firmware.js",
+        "./src/main.js",
+        "./src/rop.js",
+        "./src/utils/syscalls.js"
+      ];
+
+      function loadNext(index) {
+        if (index >= scripts.length) {
+          var moduleScript = document.createElement("script");
+          moduleScript.type = "module";
+          moduleScript.src = "./src/site.js";
+
+          moduleScript.onerror = function () {
+            show("Erreur de chargement : site.js");
+          };
+
+          document.body.appendChild(moduleScript);
+          return;
+        }
+
+        var script = document.createElement("script");
+        script.src = scripts[index];
+
+        script.onload = function () {
+          loadNext(index + 1);
+        };
+
+        script.onerror = function () {
+          show("Erreur de chargement : " + scripts[index]);
+        };
+
+        document.body.appendChild(script);
       }
+
+      loadNext(0);
     }
 
     if (!ac) {
-      show("cache unavailable");
+      show("Cache indisponible — lancement");
+      launchScripts();
       return;
     }
 
     ac.addEventListener("checking", function () {
-      show("checking cache...");
+      show("Vérification du cache...");
     }, false);
 
     ac.addEventListener("downloading", function () {
-      show("caching 0%");
+      show("Mise en cache : 0%");
     }, false);
 
     ac.addEventListener("progress", function (e) {
       if (e && e.total > 0) {
         var percent = Math.round((e.loaded / e.total) * 100);
-        show("caching " + percent + "%");
+        show("Mise en cache : " + percent + "%");
       } else {
-        show("caching...");
+        show("Mise en cache...");
       }
     }, false);
 
+    function ready(message) {
+      show(message);
+      launchScripts();
+    }
+
     ac.addEventListener("cached", function () {
-      show("cached for offline use");
+      ready("Cache prêt — lancement...");
     }, false);
 
     ac.addEventListener("noupdate", function () {
-      show("cache ready");
+      ready("Cache déjà à jour — lancement...");
     }, false);
 
     ac.addEventListener("updateready", function () {
-      show("cache updated");
+      try {
+        ac.swapCache();
+      } catch (e) {}
+
+      ready("Cache mis à jour — lancement...");
     }, false);
 
     ac.addEventListener("error", function () {
-      show("cache unavailable");
+      ready("Cache indisponible — lancement");
     }, false);
 
     ac.addEventListener("obsolete", function () {
-      show("cache obsolete");
+      ready("Cache obsolète — lancement");
     }, false);
 
     if (!navigator.onLine) {
-      show("offline -- from cache");
+      ready("Hors ligne — lancement depuis le cache");
+    } else if (
+      ac.status === ac.IDLE ||
+      ac.status === ac.UPDATEREADY
+    ) {
+      ready("Cache prêt — lancement...");
+    } else {
+      show("Vérification du cache...");
     }
-
   })();
   </script>
 
