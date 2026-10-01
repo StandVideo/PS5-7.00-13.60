@@ -40,7 +40,7 @@ payloads/elfldr-ps5-1360.elf #de5dd480d12637527ba2d75e35de851adbb59c455293fa3258
 payloads/etaHEN.elf
 payloads/kexp_2026_05_25.bin #7cfb3a8cb86db67893c360ae3531f460f800e9f24039797038e6e81fc50f18a9
 payloads/kstuff.elf #858880a8adbedaabfaced025384f4f6f908cfe44f1a049070ad8df911c22b972
-payloads/shadowmountplus.elf #0b30a1c23b83ebb2aa6523c8caaa5801ee89bde00e90cb36f392a29bb0bdb403
+payloads/shadowmountplus.elf
 payloads/pldmgr_v0.5.2.elf
 src/firmware.js #0266eb3ab0a674a83ddcd708f2bd2ff9cbde7aabac50d077f1baaad21b195bf4
 src/kexp.js
