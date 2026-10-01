@@ -39,7 +39,6 @@ offsets/9.60.js #9dad0a62346d5c487ab0a5eebfeb710309535cd9dd3f83b5b6e437878b24027
 payloads/elfldr-ps5-1360.elf #de5dd480d12637527ba2d75e35de851adbb59c455293fa32588c492ef6b44b81
 payloads/etaHEN.elf
 payloads/kexp_2026_05_25.bin #7cfb3a8cb86db67893c360ae3531f460f800e9f24039797038e6e81fc50f18a9
-payloads/shadowmountplus.elf
 payloads/pldmgr_v0.5.2.elf
 payloads/kstuff.elf
 src/firmware.js #0266eb3ab0a674a83ddcd708f2bd2ff9cbde7aabac50d077f1baaad21b195bf4
