@@ -41,6 +41,7 @@ payloads/etaHEN.elf
 payloads/kexp_2026_05_25.bin #7cfb3a8cb86db67893c360ae3531f460f800e9f24039797038e6e81fc50f18a9
 payloads/shadowmountplus.elf
 payloads/pldmgr_v0.5.2.elf
+payloads/kstuff.elf
 src/firmware.js #0266eb3ab0a674a83ddcd708f2bd2ff9cbde7aabac50d077f1baaad21b195bf4
 src/kexp.js
 src/main.js
