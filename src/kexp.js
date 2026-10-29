@@ -155,16 +155,16 @@ async function sendElf(name, payload, p, chain) {
 
 export async function loadOptionalPayloads(p, chain, log) {
   log("preparing optional payloads");
-  const kstuff = await mapElf("kstuff.elf", p, chain);
-  const pldmgr = await mapElf("pldmgr_v0.5.2.elf", p, chain);
+  const kstuff = await mapElf("kstuff1.13-fpkg-dr-test7-restmode.elf", p, chain);
+  const pldmgr = await mapElf("pldmgr_v0.6.3.elf", p, chain);
 
   await sendElf("kstuff.elf", kstuff, p, chain);
-  log("kstuff.elf sent");
+  log("kstuff1.13-fpkg-dr-test7-restmode.elf sent");
 
   await new Promise((resolve) => setTimeout(resolve, 3000));
 
-  await sendElf("pldmgr_v0.5.2.elf", pldmgr, p, chain);
-  log("pldmgr_v0.5.2.elf sent");
+  await sendElf("pldmgr_v0.6.3.elf", pldmgr, p, chain);
+  log("pldmgr_v0.6.3.elf sent");
 }
 
 function patchShellcode(blob, symbols) {
