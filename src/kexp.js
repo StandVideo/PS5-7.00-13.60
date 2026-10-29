@@ -158,7 +158,7 @@ export async function loadOptionalPayloads(p, chain, log) {
   const kstuff = await mapElf("kstuff1.13-fpkg-dr-test7-restmode.elf", p, chain);
   const pldmgr = await mapElf("pldmgr_v0.6.3.elf", p, chain);
 
-  await sendElf("kstuff.elf", kstuff, p, chain);
+  await sendElf("kstuff1.13-fpkg-dr-test7-restmode.elf", kstuff, p, chain);
   log("kstuff1.13-fpkg-dr-test7-restmode.elf sent");
 
   await new Promise((resolve) => setTimeout(resolve, 3000));
